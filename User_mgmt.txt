@@ -5,8 +5,7 @@ user3=JHGJHgyutyuuiJHGH
 user4=HJGKJhuihjGHJGUJKH
 user5=JHJKHJKLHJGhydgfdhjgjk
 
-Note: Ans – in this first we have to install package httpd-tools Yum install httpd-tools after 
-installing this package we get htpasswd command.
+
 
 ******************Only for lab practices - start **************
 Login to workstation as "student" user - student/student

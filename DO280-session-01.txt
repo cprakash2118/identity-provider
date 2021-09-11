@@ -1,0 +1,262 @@
+
+  OpenShift 
+  
+  DO180  - EX180  (Container Engine - podman - same as docker), Intro of RHOCPv4 no Admin)
+  DO280  - EX280  (RHOCP cluster - Admin part) - Deployment 
+  DO288  - EX288  (Developer track - S2I, CI/CD, Jenkins, gitops) - (DC and BC).
+  DO322  - No exam ( OpenShift installation - AWS/GCP/Azure/bare metal/VMware/RHV/RHOSP)
+  DO380  - No exam (Continue from DO280 - HA, Storage, gitops)
+  DO400  - No Exam (Git, Jenkins TDA)
+  DO425  - EX425   (OpenShift Security) 
+ 
+==================================================================
+
+  DO280 Red Hat OpenShift Administration II: Operating a Production Kubernetes Cluster
+  
+  Classroom environment:-
+  
+  1) Users:- w.r.t servers (VMs)
+    student/student, root/redhat
+	devops/redhat 
+ 
+  2) Network/Domain 
+    Student Network/Domain      -    172.25.250.x/24    - lab.example.com 
+    Classroom Network/Domain    -    172.25.254.x/24    - example.com
+    Cluster Network/Domain      -    192.168.1.x/24     - ocp4.example.com 
+    public Network/Domain       -    10.x.x.x/24        - apps.ocp4.example.com 
+	(End users applications deployed) - BookMyShow.com.
+	
+  3) Servers (VMs):-
+     
+	 3.1 
+	 workstation.lab.example.com   (Student Network/Domain)
+	 Jump server - oc installed (Which we will be using for to connect to RHOCP cluster).
+	 via oc "OpenShift-Client" login to openshift cluster.
+	 
+	 3.2 
+	 bastion.lab.example.com   (Student Network/Domain)
+	 It act as router and it connect Student network to classroom network.
+	 
+	 3.3 
+	 classroom.example.com    (Classroom Network/Domain) 
+	  - It provides you internet/other utilities (YUM/DNS etc).
+	  
+	 3.4
+	 utility.lab.example.com   (Student Network/Domain)
+	 - It act as router and it connect Student network to cluster network.
+	 
+	 3.5 
+	 master01.ocp4.example.com  (Cluster Network/Domain)
+	 master02.ocp4.example.com 
+	 master03.ocp4.example.com  
+	 
+	 Note: Three master node (Part of OpenShift cluster) act as master & worker node.
+	 
+	 
+	 
+	 Internet services:-
+	 github.com
+	 quay.io 
+	 registry.redhat.io
+	 
+============================================================
+  https://access.redhat.com/documentation/en-us/openshift_container_platform/4.6
+  
+  Install - OpenShift (RHOCPv4.6) - Kubernetes based distribution.
+    kubeadmin - user (Cluster admin account).
+	setup password at the time of installation.
+	
+	
+	1) user name 
+	2) User password 
+	3) API_URL (Rest API - OpenShift) not Kubernetes Rest API (kubectl).
+	   oc - OpenShift-client 
+	   
+	   oc installed in your workstation
+	   
+	   oc (OpenShift API) -> Kube API -> Deployment.
+	   
+	  Method -01  - Token based auth 
+	Step 1)
+	Login to workstation as student/student
+	
+	$ ssh root@utility.lab.example.com 
+	# cd /home/lab/ocp4/auth/
+	# ls -l 
+	# kubeconfig , kubeadmin-password  
+	# scp -r kube* student@workstation:/home/student/
+
+   Step 2) 
+    $cat ~/kubeconfig | grep server > mypass.txt
+    $cat ~/kubeadmin-password >> mypass.txt 
+    $vim mypass.txt 
+     _api_url=https://<API_URL-OpenShift-Server>
+     _kube_pass=<Kube-admin-password> 
+
+    $ source 	mypass.txt
+    $ oc login -u kubeadmin -p ${_kube_pass} ${_api_url}
+	
+	
+	
+	
+	Method -02 - Certificate based auth 
+	$ ls -l /home/student 
+	kubeadmin-password kubeconfig
+	
+	$ export KUBECONFIG=/home/student/kubeconfig 
+	$ env | grep KUBECONFIG
+	$ oc whoami 
+	system:admin 
+=============================================================
+
+  Login to OpenShift cluster 
+  1) by using kubeadmin
+  2) by using kubeconfig
+  3) by using new users 
+  
+    Step 1) Login to openshift cluster using kubeadmin
+	
+	Step 2) Local account creation using htpasswd file.
+	   $ htpasswd -c -b -B htpasswd_file_name john redhat 
+	   $ htpaaswd -b -B htpaaswd_file_name chandra redhat  
+	   
+	Step 3) Creating secret 
+	  $oc create secret generic secret-name --from-file htpasswd=htpasswd_file_name \
+	   -n openshift-config 
+	
+	  $ oc get secret -n openshift-config | grep <name>
+	  
+	
+	Step 4) Update Oauth file 
+	   
+	   $ oc get ouath/cluster -o yaml > oauth.yaml 
+	   https://access.redhat.com/documentation/en-us/openshift_container_platform/4.6/pdf/authentication_and_authorization/openshift_container_platform-4.6-authentication_and_authorization-en-us.pdf
+	   
+	   update in oauth file (vim oauth.yaml)
+	   
+	   $ oc replace -f oauth.yaml
+	   
+	   $ oc login -u user -p passwd api_url 
+====================================================================
+
+user1=KJHDksjhajkYTY
+user2=HGjhkyugyughjgHGH
+user3=JHGJHgyutyuuiJHGH
+user4=HJGKJhuihjGHJGUJKH
+user5=JHJKHJKLHJGhydgfdhjgjk
+
+Note: Ans – in this first we have to install package httpd-tools Yum install httpd-tools after 
+installing this package we get htpasswd command.
+
+******************Only for lab practices - start **************
+Login to workstation as "student" user - student/student
+$ ssh root@utility 
+# cd /home/lab/ocp4/auth/
+# ls 
+kubeconfig 
+kubeadmin-passwd
+# scp kube* student@workstation:/home/student
+Provide "student" as password
+# exit
+
+******************Only for lab practices - End   **************
+
+Solution 1) 
+  # mkdir ex280 ; cd ex280
+  # touch mypasswd.txt
+  # cat /root/kubeconfig | grep server >> mypasswd.txt    (Note: setup as bash variable).
+  # cat /root/kubeadmin-passwd >> mypasswd.txt
+  # vim mypasswd.txt      (Copy from given link)
+  # cat mypasswd.txt
+    _api_url=<api_url>
+    _kube_pass=<password>
+  
+  # source mypasswd.txt
+  # oc login -u kubeadmin -p ${_kube_pass}  ${_api_url}
+  # oc whoami
+    kube:admin 
+
+  # yum install httpd-tools -y or yum install httpd -y
+  # htpasswd -c -B -b htpasswd-file-upload user1 KJHDksjhajkYTY
+  # htpasswd    -B -b htpasswd-file-upload user2 HGjhkyugyughjgHGH
+  # htpasswd    -B -b htpasswd-file-upload user3 JHGJHgyutyuuiJHGH
+  # htpasswd    -B -b htpasswd-file-upload user4 HJGKJhuihjGHJGUJKH
+  # htpasswd    -B -b htpasswd-file-upload user5 JHJKHJKLHJGhydgfdhjgjk
+  # history | grep htpasswd (use ctrl key and select user name & password)
+  # vim  mypasswd.txt
+  # source mypasswd.txt
+  
+  # oc whoami 
+  # oc create secret genuser5 DO280-htpass --from-file htpasswd=htpasswd-file-upload -n openshift-config 
+  # oc get secret DO280-htpass -n openshift-config 
+  # oc get oauth/cluster -o yaml >> oauth.yaml 
+    
+	Note: Update the file "oauth.yaml" from below documentation (Authentication and authorization).
+	"https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/" 
+	https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/html/authentication_and_authorization/understanding-identity-provider#identity-provider-default-CR_understanding-identity-provider
+  
+  # oc replace -f oauth.yaml 
+  # oc login -u user1 -p ${user1} ${_api_url}
+  # alias _user1="oc login -u user1 -p ${user1} ${_api_url}"
+  # alias _user2="oc login -u user2 -p ${_user2} ${_api_url}"
+  # alias _user3="oc login -u user3 -p ${_user3} ${_api_url}"
+  # alias _user4="oc login -u user2 -p ${_user4} ${_api_url}"
+  # alias _user5="oc login -u user2 -p ${_user5} ${_api_url}"
+  # alias _kube="oc login -u kubeadmin -p ${_kube_pass}  ${_api_url}"
+  # oc whoami ; oc get users
+  # _user1 ; _user2 ; _user3 ; _user4 ; _user5 ; _kube
+  # oc whoami ; oc get users 
+  
+
+=============================================
+	   
+	   
+
+	   
+	
+	
+  
+  
+	
+	
+	
+	
+    	
+	
+	
+	
+	
+	
+	
+	   
+	   
+	   
+	   
+	   
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+
+
+	
+
+	
+
+    
+   
+    
+  

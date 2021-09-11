@@ -1,0 +1,71 @@
+
+user1=KJHDksjhajkYTY
+user2=HGjhkyugyughjgHGH
+user3=JHGJHgyutyuuiJHGH
+user4=HJGKJhuihjGHJGUJKH
+user5=JHJKHJKLHJGhydgfdhjgjk
+
+Note: Ans – in this first we have to install package httpd-tools Yum install httpd-tools after 
+installing this package we get htpasswd command.
+
+******************Only for lab practices - start **************
+Login to workstation as "student" user - student/student
+$ ssh root@utility 
+# cd /home/lab/ocp4/auth/
+# ls 
+kubeconfig 
+kubeadmin-passwd
+# scp kube* student@workstation:/home/student
+Provide "student" as password
+# exit
+
+******************Only for lab practices - End   **************
+
+Solution 1) 
+  # mkdir ex280 ; cd ex280
+  # touch mypasswd.txt
+  # cat /root/kubeconfig | grep server >> mypasswd.txt    (Note: setup as bash variable).
+  # cat /root/kubeadmin-passwd >> mypasswd.txt
+  # vim mypasswd.txt      (Copy from given link)
+  # cat mypasswd.txt
+    _api_url=<api_url>
+    _kube_pass=<password>
+  
+  # source mypasswd.txt
+  # oc login -u kubeadmin -p ${_kube_pass}  ${_api_url}
+  # oc whoami
+    kube:admin 
+
+  # yum install httpd-tools -y or yum install httpd -y
+  # htpasswd -c -B -b htpasswd-file-upload user1 KJHDksjhajkYTY
+  # htpasswd    -B -b htpasswd-file-upload user2 HGjhkyugyughjgHGH
+  # htpasswd    -B -b htpasswd-file-upload user3 JHGJHgyutyuuiJHGH
+  # htpasswd    -B -b htpasswd-file-upload user4 HJGKJhuihjGHJGUJKH
+  # htpasswd    -B -b htpasswd-file-upload user5 JHJKHJKLHJGhydgfdhjgjk
+  # history | grep htpasswd (use ctrl key and select user name & password)
+  # vim  mypasswd.txt
+  # source mypasswd.txt
+  
+  # oc whoami 
+  # oc create secret genuser5 DO280-htpass --from-file htpasswd=htpasswd-file-upload -n openshift-config 
+  # oc get secret DO280-htpass -n openshift-config 
+  # oc get oauth/cluster -o yaml >> oauth.yaml 
+    
+	Note: Update the file "oauth.yaml" from below documentation (Authentication and authorization).
+	"https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/" 
+	https://access.redhat.com/documentation/en-us/openshift_container_platform/4.5/html/authentication_and_authorization/understanding-identity-provider#identity-provider-default-CR_understanding-identity-provider
+  
+  # oc replace -f oauth.yaml 
+  # oc login -u user1 -p ${user1} ${_api_url}
+  # alias _user1="oc login -u user1 -p ${user1} ${_api_url}"
+  # alias _user2="oc login -u user2 -p ${_user2} ${_api_url}"
+  # alias _user3="oc login -u user3 -p ${_user3} ${_api_url}"
+  # alias _user4="oc login -u user2 -p ${_user4} ${_api_url}"
+  # alias _user5="oc login -u user2 -p ${_user5} ${_api_url}"
+  # alias _kube="oc login -u kubeadmin -p ${_kube_pass}  ${_api_url}"
+  # oc whoami ; oc get users
+  # _user1 ; _user2 ; _user3 ; _user4 ; _user5 ; _kube
+  # oc whoami ; oc get users 
+  
+
+=============================================

@@ -1,0 +1,262 @@
+    1  hostname -s 
+    2  su - 
+    3  su - devops
+    4  hostname -s
+    5  hostname -d
+    6  hostname -f
+    7  nslookup workstaion 
+    8  nslookup workstation 
+    9  nslookup utility
+   10  nslookup utility.lab.example.com
+   11  nslookup utility.lab.example.com 
+   12  cat /etc/hosts
+   13  ssh utility.lab.example.com 
+   14  ssh utility.lab.example.com  -l root
+   15  nslookup bastion.lab.example.com
+   16  nslookup classroom.example.com 
+   17  nslookup utility
+   18  nslookup utility.lab.example.com
+   19  ssh utility.lab.example.com
+   20  ssh utility.lab.example.com -l root
+   21  nslookup classroom.example.com 
+   22  nslookup 172.25.250.254
+   23  ssh 172.25.250.254 -l root
+   24  nslookup bastion
+   25  cat /etc/hosts 
+   26  nslookup content.example.com
+   27  nslookup 172.25.254.254
+   28  ssh classroom.example.com 
+   29  nslookup google.com 
+   30  nslookup registry.docker.com 
+   31  nslookup registry.docker.io 
+   32  ssh utility -l root
+   33  nslookup github.com 
+   34  nslookup 140.82.113.4
+   35  nslookup registry.redhat.io
+   36  which oc 
+   37  oc --help |less
+   38  oc login --help |less
+   39  ssh root@utility
+   40  ll
+   41  cat kubeadmin-password 
+   42  cat kubeconfig| grep server 
+   43  mkdir work 
+   44  cd work/
+   45  cat ../kubeconfig | grep server > mypass.txt 
+   46  cat ../kubeadmin-password >> mypass.txt 
+   47  vim mypass.txt 
+   48  source  mypass.txt  
+   49  cat mypass.txt 
+   50  oc login -u kubeadmin -p ${_kube_pass} ${_pai_url} 
+   51  oc login -u kubeadmin -p ${_kube_pass} ${_api_url} 
+   52  oc whoami 
+   53  oc get nodes 
+   54  oc whoami --show-console 
+   55  oc whoami 
+   56  ll
+   57  oc whoami 
+   58  oc whoami -t 
+   59  oc logout 
+   60  oc whoami
+   61  cd
+   62  ls -l kubeconfig
+   63  export KUBECONFIG=/home/student/kubeconfig
+   64  env | grep KUBECONFIG 
+   65  oc whoami 
+   66  oc whoami -t 
+   67  oc logout 
+   68  oc whoami 
+   69  unset KUBECONFIG 
+   70  env | grep KUBECONFIG 
+   71  oc whoami 
+   72  export KUBECONFIG=/home/student/kubeconfig
+   73  oc whoami 
+   74  oc whoami -t 
+   75  oc logout 
+   76  cat kubeconfig | grep server 
+   77  oc status 
+   78  oc whoami 
+   79  unset KUBECONFIG 
+   80  oc whoami 
+   81  oc login -u kubeadmin -p ${_kube_pass} 
+   82  oc login -u kubeadmin -p ${_kube_pass} ${_api_url}
+   83  vim work/mypass.txt 
+   84  source work/mypass.txt
+   85  oc login -u kubeadmin -p ${_kube_pass} ${_api_url_cluster01}
+   86  cat work/mypass.txt 
+   87  oc whoami --show-console 
+   88  oc login --token=sha256~RHniPUx3IXGeY8E30Or1_LT05NH4EAvmEig63UwvKow --server=https://api.ocp4.example.com:6443
+   89  oc whoami -t 
+   90  cd Downloads/
+   91  ll
+   92  tar -xf oc.tar 
+   93  ll
+   94  vim oc
+   95  cp -rpv oc /usr/local/bin/
+   96  sudo cp -rpv oc /usr/local/bin/
+   97  ll
+   98  cd
+   99  htpasswd --help 
+  100  oc whoami 
+  101  htpasswd -c -b -B htpasswd_file_name john redhat
+  102  cat htpasswd_file_name 
+  103  htpaaswd -b -B htpaaswd_file_name chandra redhat
+  104  htpasswd -b -B htpaaswd_file_name chandra redhat
+  105  htpasswd -b -B htpasswd_file_name chandra redhat
+  106  cat htpasswd_file_name 
+  107  htpasswd -c -b -B htpasswd_file_name tom redhat
+  108  cat htpasswd_file_name 
+  109  htpasswd -b -B htpasswd_file_name chandra redhat
+  110  cat htpasswd_file_name 
+  111  ll
+  112  mkdir work
+  113  mkdir auth 
+  114  cp -rpv htpasswd_file_name auth/
+  115  cd auth/
+  116  pwd
+  117  ll
+  118  cat htpasswd_file_name 
+  119  oc create secret generic any_name --from-file htpasswd=htpasswd_file_name -n openshift-config 
+  120  oc create secret generic anyname-01 --from-file htpasswd=htpasswd_file_name -n openshift-config 
+  121  oc projects | grep openshift 
+  122  oc projects | grep -i openshift 
+  123  oc projects | grep -i openshift-config 
+  124  oc get project -n openshift-config
+  125  oc get project -n openshift-config | grep 01
+  126  oc get project -n openshift-config | grep  any
+  127  oc get project -n openshift-config | grep any-name 
+  128  oc get project -n openshift-config | grep anyname 
+  129  oc get secret -n openshift-config | grep any-name 
+  130  oc get secret -n openshift-config | grep anyname
+  131  oc get secret anyname-01 -n openshift-config
+  132  oc get secret anyname-01 -n openshift-config -o yaml 
+  133  oc get secret anyname-01 -n openshift-config -o json 
+  134  oc get secret anyname-01 -n openshift-config -o yaml 
+  135  ll
+  136  rm -rf * 
+  137  ll
+  138  oc whoami 
+  139  oc get oauth/cluster -o yaml > oauth.yaml 
+  140  vim oauth.yaml 
+  141  oc replace -f oauth.yaml 
+  142  oc login -u chandra -p redhat 
+  143  oc whoami 
+  144  vim oauth.yaml 
+  145  oc edit oauth/cluster 
+  146  oc whoami 
+  147  oc login -u kubeadmin -p ${_kube_pass} ${_api_url_cluster01}
+  148  oc whoami 
+  149  oc edit oauth/cluster 
+  150  oc get users 
+  151  oc edit oauth/cluster 
+  152  oc create secret generic anyname-02 --from-file htpasswd=htpasswd_file_name -n openshift-config 
+  153  oc whoami 
+  154  #oc create secret generic anyname-02 --from-file htpasswd=htpasswd_file_name -n openshift-config 
+  155  ll
+  156  htpasswd -c -B -b htpasswd-02 vinod redhat 
+  157  htpasswd  -B -b htpasswd-02 ram redhat 
+  158  htpasswd  -B -b htpasswd-02 chandra redhat 
+  159  cat htpasswd-02 
+  160  oc create secret generic anyname-02 --from-file htpasswd=htpasswd-02 -n openshift-config 
+  161  oc get secret -n openshift-config | grep any 
+  162  vim oauth.yaml 
+  163  oc replace -f oauth.yaml 
+  164  vim oauth.yaml 
+  165  oc get oauth/cluster -o yaml > oauth-02.yaml 
+  166  vim oauth-02.yaml 
+  167  oc replace -f oauth-02.yaml 
+  168  vim oauth-02.yaml 
+  169  oc login -u vinod -p redhat 
+  170  oc whoami 
+  171  oc logout 
+  172  oc login -u chandra -p redhat 
+  173  oc whoami 
+  174  oc login -u kubeadmin -p ${_kube_pass} ${_api_url_cluster01}
+  175  oc whoami 
+  176* 
+  177  oc edit oauth/cluster 
+  178  oc get oauth/cluster -o yaml > oauth-03.yaml 
+  179  vim oauth-03.yaml 
+  180  oc replace -f oauth-03.yaml 
+  181  vim oauth-03.yaml 
+  182  ll
+  183  mkdir new
+  184  cd new/
+  185  pwd
+  186  ll
+  187  cd ..
+  188  ll
+  189  vim oauth-03.yaml 
+  190  oc whoami 
+  191  oc get secret anyname-01 -n openshift-config -o yaml 
+  192  oc get secret anyname-01 -n openshift-config | grep any
+  193  oc get secret -n openshift-config | grep any
+  194  cd new/
+  195  pwd
+  196  ll
+  197  oc extract anyname-01/secret -n openshift-config 
+  198  oc extract --help |less
+  199  oc extract secret/anyname-01 -n openshift-config 
+  200  ll
+  201  cat htpasswd 
+  202  rm -rf htpasswd 
+  203  oc extract secret/anyname-01 -n openshift-config 
+  204  ll
+  205  cat htpasswd 
+  206  mv htpasswd htpasswd-01
+  207  ll
+  208  oc extract secret/anyname-02 -n openshift-config 
+  209  ll
+  210  cat htpasswd
+  211  htpasswd -D chandra htpasswd
+  212  htpasswd -D htpasswd chandra 
+  213  cat htpasswd
+  214  oc set data secret/anyname-02 --from-file htpasswd=htpasswd -n openshift-config 
+  215  cat htpasswd
+  216  oc login -u ram -p redhat 
+  217  oc whoami 
+  218  oc login -u chandra -p redhat 
+  219  oc login -u kubeadmin -p ${_kube_pass} ${_api_url_cluster01}
+  220  oc get users
+  221  oc get identity 
+  222  oc edit oauth/cluster 
+  223  oc login -u chandra -p redhat 
+  224  oc whoami 
+  225  oc login -u kubeadmin -p ${_kube_pass} ${_api_url_cluster01}
+  226  oc get users 
+  227  ll
+  228  cat htpasswd
+  229  htpasswd -b -B htpasswd chandra redhat123 
+  230  cat htpasswd
+  231  oc set data secret/anyname-02 --from-file htpasswd=htpasswd -n openshift-config 
+  232  oc get users 
+  233  oc login -u chandra -p redhat123 
+  234  cat htpasswd
+  235  htpasswd -D htpasswd chandra 
+  236  htpasswd -B -b htpasswd vinod red
+  237  oc set data secret/anyname-02 --from-file htpasswd=htpasswd -n openshift-config 
+  238  oc login -u vinod -p redhat 
+  239  oc login -u vinod -p red
+  240  oc login -u kubeadmin -p ${_kube_pass} ${_api_url_cluster01}
+  241  oc get secret -n openshift-config 
+  242  oc extract secret/builder-dockercfg-f2fcd -n openshift-config 
+  243  ll
+  244  ls -la
+  245  vim .dockercfg 
+  246  oc whoami 
+  247  oc projects | grep kube 
+  248  oc get secret kubeadmin -n kube-system
+  249  cat /etc/passwd | grep root 
+  250  ll
+  251  git clone https://github.com/cprakash2118/identity-provider
+  252  ll
+  253  cd identity-provider/
+  254  cp -rpv ../htpasswd .
+  255  ll
+  256  git branch 
+  257  git status 
+  258  git add htpasswd 
+  259  git status 
+  260  git commit -m "Test"
+  261  git push 
+  262  history > history-01 
